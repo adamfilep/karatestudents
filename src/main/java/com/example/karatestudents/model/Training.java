@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import java.time.LocalTime;
 import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -26,7 +27,7 @@ public class Training {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private Day day;
+    private Day trainingDay;
 
     private LocalTime startsAt;
 
