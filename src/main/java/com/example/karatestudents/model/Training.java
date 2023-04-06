@@ -34,7 +34,6 @@ public class Training {
     private LocalTime endsAt;
 
     @ManyToOne
-    @JoinColumn(name = "trainer_id")
     @JsonManagedReference
     private Trainer trainer;
 
