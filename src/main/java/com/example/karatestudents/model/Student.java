@@ -36,7 +36,7 @@ public class Student {
 
     private boolean isStudent;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "studentList")
     @Fetch(FetchMode.SELECT)
     @JsonManagedReference
     private List<Training> trainingList;
