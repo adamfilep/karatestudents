@@ -31,6 +31,7 @@ public class Student {
     private LocalDate startedKarate;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "std_rank")
     private Rank rank;
 
     private boolean isStudent;

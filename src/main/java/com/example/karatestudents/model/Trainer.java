@@ -25,6 +25,7 @@ public class Trainer {
     private String name;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "trn_rank")
     private Rank rank;
 
     @OneToMany(mappedBy = "trainer")
