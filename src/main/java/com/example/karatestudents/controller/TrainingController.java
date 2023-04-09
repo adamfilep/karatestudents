@@ -2,6 +2,7 @@ package com.example.karatestudents.controller;
 
 import com.example.karatestudents.model.Training;
 import com.example.karatestudents.service.TrainingService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -9,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/trainings")
+@Tag(name = "Operations on trainings")
 public class TrainingController {
 
     private TrainingService trainingService;
