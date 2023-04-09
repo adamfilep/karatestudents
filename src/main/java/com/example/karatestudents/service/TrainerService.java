@@ -1,8 +1,9 @@
 package com.example.karatestudents.service;
 
-import com.example.karatestudents.model.Student;
 import com.example.karatestudents.model.Trainer;
 import com.example.karatestudents.model.Training;
+import com.example.karatestudents.model.dto.TrainerDto;
+import com.example.karatestudents.model.enums.Rank;
 import com.example.karatestudents.repository.TrainerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -21,7 +22,11 @@ public class TrainerService {
         this.trainerRepository = trainerRepository;
     }
 
-    public void saveTrainer(Trainer trainer) {
+    public void saveTrainer(TrainerDto trainerDto) {
+        Trainer trainer = Trainer.builder()
+                .name(trainerDto.getName())
+                .rank(Rank.valueOf(trainerDto.getRank()))
+                .build();
         trainerRepository.save(trainer);
     }
 
@@ -34,11 +39,10 @@ public class TrainerService {
     }
 
     @Transactional
-    public void updateTrainer(Long id, Trainer updatedTrainer) {
+    public void updateTrainer(Long id, TrainerDto updatedTrainerDto) {
         Trainer trainer = trainerRepository.getReferenceById(id);
-        trainer.setName(updatedTrainer.getName());
-        trainer.setRank(updatedTrainer.getRank());
-        trainer.setTrainingList(updatedTrainer.getTrainingList());
+        trainer.setName(updatedTrainerDto.getName());
+        trainer.setRank(Rank.valueOf(updatedTrainerDto.getRank()));
         trainerRepository.save(trainer);
     }
 
