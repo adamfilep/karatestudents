@@ -20,7 +20,7 @@ public class TrainingDto {
     private String name;
 
     @ValueOfEnum(enumClass = Day.class, message = "Input is not a day")
-    private Day trainingDay;
+    private String trainingDay;
 
     @Pattern(regexp = "^(?:[01][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$", message = "Incorrect time format, the correct format is hh:MM:ss")
     private LocalTime startsAt;
