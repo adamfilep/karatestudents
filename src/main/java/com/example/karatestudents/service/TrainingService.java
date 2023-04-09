@@ -3,6 +3,8 @@ package com.example.karatestudents.service;
 import com.example.karatestudents.model.Student;
 import com.example.karatestudents.model.Trainer;
 import com.example.karatestudents.model.Training;
+import com.example.karatestudents.model.dto.TrainingDto;
+import com.example.karatestudents.model.enums.Day;
 import com.example.karatestudents.repository.TrainingRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -21,7 +23,14 @@ public class TrainingService {
         this.trainingRepository = trainingRepository;
     }
 
-    public void saveTraining(Training training) {
+    public void saveTraining(TrainingDto trainingDto) {
+        Training training = Training.builder()
+                .name(trainingDto.getName())
+                .trainingDay(Day.valueOf(trainingDto.getTrainingDay()))
+                .startsAt(trainingDto.getStartsAt())
+                .endsAt(trainingDto.getEndsAt())
+                .location(trainingDto.getLocation())
+                .build();
         trainingRepository.save(training);
     }
 
@@ -34,15 +43,13 @@ public class TrainingService {
     }
 
     @Transactional
-    public void updateTraining(Long id, Training updatedTraining) {
+    public void updateTraining(Long id, TrainingDto updatedTrainingDto) {
         Training training = trainingRepository.getReferenceById(id);
-        training.setName(updatedTraining.getName());
-        training.setTrainingDay(updatedTraining.getTrainingDay());
-        training.setStartsAt(updatedTraining.getStartsAt());
-        training.setEndsAt(updatedTraining.getEndsAt());
-        training.setTrainer(updatedTraining.getTrainer());
-        training.setLocation(updatedTraining.getLocation());
-        training.setStudentList(updatedTraining.getStudentList());
+        training.setName(updatedTrainingDto.getName());
+        training.setTrainingDay(Day.valueOf(updatedTrainingDto.getTrainingDay()));
+        training.setStartsAt(updatedTrainingDto.getStartsAt());
+        training.setEndsAt(updatedTrainingDto.getEndsAt());
+        training.setLocation(updatedTrainingDto.getLocation());
         trainingRepository.save(training);
     }
 
