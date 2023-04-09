@@ -1,11 +1,13 @@
 package com.example.karatestudents.controller;
 
 import com.example.karatestudents.model.Student;
+import com.example.karatestudents.model.dto.StudentDto;
 import com.example.karatestudents.service.StudentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,8 +30,8 @@ public class StudentController {
             @ApiResponse(responseCode = "200", description = "Student added")
     })
     @PostMapping
-    public void saveStudent(Student student) {
-        studentService.saveStudent(student);
+    public void saveStudent(@Valid @RequestBody StudentDto studentDto) {
+        studentService.saveStudent(studentDto);
     }
 
     @Operation(summary = "Get all students")
@@ -55,8 +57,8 @@ public class StudentController {
             @ApiResponse(responseCode = "200", description = "Student updated")
     })
     @PutMapping("/{id}")
-    public void updateStudent(@PathVariable("id") Long id, @RequestBody Student updatedStudent) {
-        studentService.updateStudent(id, updatedStudent);
+    public void updateStudent(@PathVariable("id") Long id, @Valid @RequestBody StudentDto updatedStudentDto) {
+        studentService.updateStudent(id, updatedStudentDto);
     }
 
     @Operation(summary = "Delete student with a specific id")

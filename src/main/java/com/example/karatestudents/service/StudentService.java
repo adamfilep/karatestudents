@@ -2,6 +2,8 @@ package com.example.karatestudents.service;
 
 import com.example.karatestudents.model.Student;
 import com.example.karatestudents.model.Training;
+import com.example.karatestudents.model.dto.StudentDto;
+import com.example.karatestudents.model.enums.Rank;
 import com.example.karatestudents.repository.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -21,12 +23,19 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
-    public void saveStudent(Student student) {
+    public void saveStudent(StudentDto studentDto) {
+        Student student = Student.builder()
+                .name(studentDto.getName())
+                .dateOfBirth(studentDto.getDateOfBirth())
+                .startedKarate(studentDto.getStartedKarate())
+                .rank(Rank.valueOf(studentDto.getRank()))
+                .isStudent(studentDto.isStudent())
+                .build();
         studentRepository.save(student);
     }
 
     public List<Student> getAllStudents() {
-       return studentRepository.findAll();
+        return studentRepository.findAll();
     }
 
     public Student getStudentById(Long id) {
@@ -34,14 +43,13 @@ public class StudentService {
     }
 
     @Transactional
-    public void updateStudent(Long id, Student updatedStudent) {
+    public void updateStudent(Long id, StudentDto updatedStudentDto) {
         Student student = studentRepository.getReferenceById(id);
-        student.setName(updatedStudent.getName());
-        student.setDateOfBirth(updatedStudent.getDateOfBirth());
-        student.setStartedKarate(updatedStudent.getStartedKarate());
-        student.setRank(updatedStudent.getRank());
-        student.setStudent(updatedStudent.isStudent());
-        student.setTrainingList(updatedStudent.getTrainingList());
+        student.setName(updatedStudentDto.getName());
+        student.setDateOfBirth(updatedStudentDto.getDateOfBirth());
+        student.setStartedKarate(updatedStudentDto.getStartedKarate());
+        student.setRank(Rank.valueOf(updatedStudentDto.getRank()));
+        student.setStudent(updatedStudentDto.isStudent());
         studentRepository.save(student);
     }
 
