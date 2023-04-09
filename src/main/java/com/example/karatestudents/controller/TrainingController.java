@@ -1,8 +1,10 @@
 package com.example.karatestudents.controller;
 
 import com.example.karatestudents.model.Training;
+import com.example.karatestudents.model.dto.TrainingDto;
 import com.example.karatestudents.service.TrainingService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,8 +23,8 @@ public class TrainingController {
     }
 
     @PostMapping
-    public void saveTraining(Training training) {
-        trainingService.saveTraining(training);
+    public void saveTraining(@Valid @RequestBody TrainingDto trainingDto) {
+        trainingService.saveTraining(trainingDto);
     }
 
     @GetMapping
@@ -36,8 +38,8 @@ public class TrainingController {
     }
 
     @PutMapping("/{id}")
-    public void updateTraining(@PathVariable("id") Long id, @RequestBody Training updatedTraining) {
-        trainingService.updateTraining(id, updatedTraining);
+    public void updateTraining(@PathVariable("id") Long id, @Valid @RequestBody TrainingDto updatedTrainingDto) {
+        trainingService.updateTraining(id, updatedTrainingDto);
     }
 
     @DeleteMapping("/{id}")
