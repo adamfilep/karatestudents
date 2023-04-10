@@ -1,6 +1,7 @@
 package com.example.karatestudents.model.dto;
 
 import com.example.karatestudents.model.enums.Day;
+import com.example.karatestudents.validation.ValidTime;
 import com.example.karatestudents.validation.ValueOfEnum;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -22,10 +23,10 @@ public class TrainingDto {
     @ValueOfEnum(enumClass = Day.class, message = "Input is not a day")
     private String trainingDay;
 
-    //TODO validation for localtime?
+    @ValidTime(message = "Not a valid time format, you should use hh:MM:ss")
     private LocalTime startsAt;
 
-    //TODO validation for localtime?
+    @ValidTime(message = "Not a valid time format, you should use hh:MM:ss")
     private LocalTime endsAt;
 
     @NotBlank(message = "Location cannot be blank")
