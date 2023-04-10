@@ -47,4 +47,14 @@ public class TrainingController {
         trainingService.deleteTrainingById(id);
     }
 
+    @PostMapping("/addtrainer")
+    public void addTrainerToTraining(@RequestParam("training_id") Long trainingId, @RequestParam("trainer_id") Long trainerId) {
+        trainingService.addTrainerToTraining(trainingId, trainerId);
+    }
+
+    @PostMapping("/addstudent")
+    public void addStudentToTraining(@RequestParam("training_id") Long trainingId, @RequestParam("student_id") Long studentId) {
+        trainingService.addStudentToTraining(trainingId, studentId);
+    }
+
 }

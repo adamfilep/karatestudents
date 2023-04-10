@@ -66,4 +66,12 @@ public class TrainingService {
         trainer.getTrainingList().remove(training);
         trainingRepository.deleteById(id);
     }
+
+    public void addTrainerToTraining(Long trainingId, Long trainerId) {
+        trainingRepository.addTrainerToTraining(trainingId, trainerId);
+    }
+
+    public void addStudentToTraining(Long trainingId, Long studentId) {
+        trainingRepository.addStudentToTraining(trainingId, studentId);
+    }
 }
