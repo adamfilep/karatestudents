@@ -7,8 +7,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,11 +30,17 @@ public class TrainerController {
 
     @Operation(summary = "Save new trainer")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "New trainer saved")
+            @ApiResponse(responseCode = "200", description = "New trainer saved"),
+            @ApiResponse(responseCode = "400", description = "Request JSON was not correct")
     })
     @PostMapping
-    public void saveTrainer(@Valid @RequestBody TrainerDto trainerDto) {
-        trainerService.saveTrainer(trainerDto);
+    public ResponseEntity<Trainer> saveTrainer(@Valid @RequestBody TrainerDto trainerDto) {
+        try {
+            trainerService.saveTrainer(trainerDto);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @Operation(summary = "Get all trainers")
@@ -39,34 +48,51 @@ public class TrainerController {
             @ApiResponse(responseCode = "200", description = "Trainers found")
     })
     @GetMapping
-    public List<Trainer> getAllTrainers() {
-        return trainerService.getAllTrainers();
+    public ResponseEntity<List<Trainer>> getAllTrainers() {
+        return ResponseEntity.ok(trainerService.getAllTrainers());
     }
 
     @Operation(summary = "Get trainer with a specific id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Trainer found")
+            @ApiResponse(responseCode = "200", description = "Trainer found"),
+            @ApiResponse(responseCode = "404", description = "Trainer not found")
     })
     @GetMapping("/{id}")
-    public Trainer getTrainerById(@PathVariable("id") Long id) {
-        return trainerService.getTrainerById(id);
+    public ResponseEntity<Trainer> getTrainerById(@PathVariable("id") Long id) {
+        try {
+            return ResponseEntity.ok(trainerService.getTrainerById(id));
+        } catch (EntityNotFoundException ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @Operation(summary = "Update trainer with a specific id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Trainer updated")
+            @ApiResponse(responseCode = "200", description = "Trainer updated"),
+            @ApiResponse(responseCode = "400", description = "Request JSON or id was not correct")
     })
     @PutMapping("/{id}")
-    public void updateTrainer(@PathVariable("id") Long id, @Valid @RequestBody TrainerDto updatedTrainerDto) {
-        trainerService.updateTrainer(id, updatedTrainerDto);
+    public ResponseEntity<Trainer> updateTrainer(@PathVariable("id") Long id, @Valid @RequestBody TrainerDto updatedTrainerDto) {
+        try {
+            trainerService.updateTrainer(id, updatedTrainerDto);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok().build();
     }
 
     @Operation(summary = "Delete trainer with a specific id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Trainer deleted")
+            @ApiResponse(responseCode = "200", description = "Trainer deleted successfully"),
+            @ApiResponse(responseCode = "404", description = "Trainer to be deleted not found")
     })
     @DeleteMapping("/{id}")
-    public void deleteTrainer(@PathVariable("id") Long id) {
-        trainerService.deleteTrainerById(id);
+    public ResponseEntity<Trainer> deleteTrainer(@PathVariable("id") Long id) {
+        try {
+            trainerService.deleteTrainerById(id);
+        } catch (IllegalArgumentException ex) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.noContent().build();
     }
 }
