@@ -70,7 +70,7 @@ class StudentServiceTest {
     }
 
     @Test
-    void getStudentById_inputExistingId() {
+    void getStudentById_inputExistingIdTest() {
         Long studentId = 1L;
         Student expectedStudent = new Student();
         expectedStudent.setId(studentId);
@@ -101,7 +101,7 @@ class StudentServiceTest {
     }
 
     @Test
-    void updateStudent_shouldUpdateStudentWhenExists() {
+    void updateStudent_shouldUpdateStudentWhenExistsTest() {
         Long id = 1L;
         StudentDto updatedStudentDto = new StudentDto(
                 "John Smith",
@@ -133,7 +133,7 @@ class StudentServiceTest {
     }
 
     @Test
-    void deleteStudentById_deleteStudentWhenFound() {
+    void deleteStudentById_deleteStudentWhenFoundTest() {
         Long id = 1L;
         Student student = new Student();
         student.setId(id);
