@@ -25,9 +25,9 @@ public class StudentController {
         this.studentService = studentService;
     }
 
-    @Operation(summary = "Add student")
+    @Operation(summary = "Save new student")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Student added")
+            @ApiResponse(responseCode = "200", description = "New student saved")
     })
     @PostMapping
     public void saveStudent(@Valid @RequestBody StudentDto studentDto) {
@@ -69,5 +69,4 @@ public class StudentController {
     public void deleteStudent(@PathVariable("id") Long id) {
         studentService.deleteStudentById(id);
     }
-
 }
