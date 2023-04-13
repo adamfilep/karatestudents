@@ -45,24 +45,16 @@ class StudentControllerIT {
                 .isStudent(true)
                 .build();
 
-        String json = null;
-
-        // serialize the studentDto to JSON
-        try {
-            json = objectMapper.writeValueAsString(studentDto);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        // make HTTP POST request to save the student
+        // HTTP post request
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<String> entity = new HttpEntity<>(json, headers);
+        HttpEntity<StudentDto> entity = new HttpEntity<>(studentDto, headers);
 
-        ResponseEntity<Student> response = restTemplate.postForEntity(STUDENT_URL, entity, Student.class);
+        // get a response
+        ResponseEntity<Student> postResponse = restTemplate.postForEntity(STUDENT_URL, entity, Student.class);
 
         // assert that the response status is CREATED
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(HttpStatus.CREATED, postResponse.getStatusCode());
 
         // verify that the saveStudent method of the StudentService was called with the correct arguments
         ArgumentCaptor<StudentDto> argumentCaptor = ArgumentCaptor.forClass(StudentDto.class);
@@ -70,6 +62,30 @@ class StudentControllerIT {
 
         StudentDto savedStudentDto = argumentCaptor.getValue();
         assertSameStudent(studentDto, savedStudentDto);
+    }
+
+    @Test
+    public void testSaveStudentWithFaultyJson() {
+
+        // create a new studentDto
+        StudentDto studentDto = StudentDto.builder()
+                .name("")
+                .dateOfBirth(LocalDate.of(1980, 1,1))
+                .startedKarate(LocalDate.of(2000,1,1))
+                .rank("WHITE_BELT")
+                .isStudent(true)
+                .build();
+
+        // HTTP post request
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<StudentDto> entity = new HttpEntity<>(studentDto, headers);
+
+        // get a response
+        ResponseEntity<Error> response = restTemplate.postForEntity(STUDENT_URL, entity, Error.class);
+
+        // assert that the response status is BAD REQUEST
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
     @Test
