@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Log4j2
 public class StudentService {
 
     private StudentRepository studentRepository;
@@ -26,8 +25,6 @@ public class StudentService {
     }
 
     public void saveStudent(StudentDto studentDto) {
-        System.out.println("Entering service");
-        log.info("Entering service layer");
         Student student = Student.builder()
                 .name(studentDto.getName())
                 .dateOfBirth(studentDto.getDateOfBirth())
@@ -35,8 +32,6 @@ public class StudentService {
                 .rank(Rank.valueOf(studentDto.getRank()))
                 .isStudent(studentDto.isStudent())
                 .build();
-        log.info("Student to be saved: ");
-        log.info(student);
         studentRepository.save(student);
     }
 

@@ -1,32 +1,21 @@
 package com.example.karatestudents.controller;
 
 import com.example.karatestudents.model.Student;
-import com.example.karatestudents.model.Trainer;
-import com.example.karatestudents.model.Training;
 import com.example.karatestudents.model.dto.StudentDto;
-import com.example.karatestudents.model.enums.Day;
-import com.example.karatestudents.model.enums.Rank;
 import com.example.karatestudents.service.StudentService;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.persistence.*;
-import lombok.*;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.*;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
@@ -38,7 +27,10 @@ class StudentControllerIT {
     @Autowired
     private TestRestTemplate restTemplate;
 
-    @MockBean
+    @Autowired
+    ApplicationContext context;
+
+    @SpyBean
     private StudentService studentService;
 
     @LocalServerPort
@@ -47,8 +39,10 @@ class StudentControllerIT {
     private String studentUrl;
 
     @BeforeEach
-    void setup() {
+    void setup(@Autowired Flyway flyway) {
         studentUrl = "http://localhost:" + port + "/students";
+        flyway.clean();
+        flyway.migrate();
     }
 
     @Test
@@ -127,13 +121,16 @@ class StudentControllerIT {
         postStudentDto(studentUrl, student1);
         postStudentDto(studentUrl, student2);
 
-        final var responseString = restTemplate.getForObject(studentUrl, String.class);
-        final var response = restTemplate.getForEntity(studentUrl, StudentDto[].class);
+        final ResponseEntity<StudentDto[]> response = restTemplate.getForEntity(studentUrl, StudentDto[].class);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
+
         final StudentDto[] testStudents = response.getBody();
+        assert testStudents != null;
 
         assertEquals(2, testStudents.length);
+        assertEquals("John Doe", testStudents[0].getName());
+        assertEquals("Jane Hunter", testStudents[1].getName());
     }
 
     @Test
