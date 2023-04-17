@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/students")
 @Tag(name = "Operations on students")
+@Log4j2
 public class StudentController {
 
     private StudentService studentService;
@@ -35,11 +37,15 @@ public class StudentController {
     })
     @PostMapping
     public ResponseEntity<Student> saveStudent(@Valid @RequestBody StudentDto studentDto) {
+        log.info("Posting entity");
         try {
+            log.info("Saving to database");
             studentService.saveStudent(studentDto);
-        } catch (IllegalArgumentException ex) {
+            log.info(studentDto);
+        } catch (RuntimeException ex) {
             return ResponseEntity.badRequest().build();
         }
+        log.info("Entity posted");
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

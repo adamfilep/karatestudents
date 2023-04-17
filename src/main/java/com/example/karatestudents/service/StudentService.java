@@ -7,6 +7,7 @@ import com.example.karatestudents.model.enums.Rank;
 import com.example.karatestudents.repository.StudentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Log4j2
 public class StudentService {
 
     private StudentRepository studentRepository;
@@ -24,6 +26,8 @@ public class StudentService {
     }
 
     public void saveStudent(StudentDto studentDto) {
+        System.out.println("Entering service");
+        log.info("Entering service layer");
         Student student = Student.builder()
                 .name(studentDto.getName())
                 .dateOfBirth(studentDto.getDateOfBirth())
@@ -31,6 +35,8 @@ public class StudentService {
                 .rank(Rank.valueOf(studentDto.getRank()))
                 .isStudent(studentDto.isStudent())
                 .build();
+        log.info("Student to be saved: ");
+        log.info(student);
         studentRepository.save(student);
     }
 

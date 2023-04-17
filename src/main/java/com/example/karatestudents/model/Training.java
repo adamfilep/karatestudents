@@ -2,6 +2,7 @@ package com.example.karatestudents.model;
 
 import com.example.karatestudents.model.enums.Day;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
