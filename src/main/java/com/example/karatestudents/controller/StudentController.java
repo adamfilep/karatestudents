@@ -37,7 +37,7 @@ public class StudentController {
     public ResponseEntity<Student> saveStudent(@Valid @RequestBody StudentDto studentDto) {
         try {
             studentService.saveStudent(studentDto);
-        } catch (RuntimeException ex) {
+        } catch (IllegalArgumentException ex) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.status(HttpStatus.CREATED).build();

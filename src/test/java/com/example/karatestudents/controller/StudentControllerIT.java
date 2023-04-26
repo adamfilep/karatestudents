@@ -3,7 +3,6 @@ package com.example.karatestudents.controller;
 import com.example.karatestudents.model.Student;
 import com.example.karatestudents.model.dto.StudentDto;
 import com.example.karatestudents.service.StudentService;
-import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -12,8 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.context.ApplicationContext;
 import org.springframework.http.*;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.time.LocalDate;
 
@@ -22,13 +21,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 class StudentControllerIT {
 
     @Autowired
     private TestRestTemplate restTemplate;
-
-    @Autowired
-    ApplicationContext context;
 
     @SpyBean
     private StudentService studentService;
@@ -39,10 +36,8 @@ class StudentControllerIT {
     private String studentUrl;
 
     @BeforeEach
-    void setup(@Autowired Flyway flyway) {
+    void setup() {
         studentUrl = "http://localhost:" + port + "/students";
-        flyway.clean();
-        flyway.migrate();
     }
 
     @Test
