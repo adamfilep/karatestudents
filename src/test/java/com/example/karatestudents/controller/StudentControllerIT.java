@@ -2,6 +2,7 @@ package com.example.karatestudents.controller;
 
 import com.example.karatestudents.model.Student;
 import com.example.karatestudents.model.dto.StudentDto;
+import com.example.karatestudents.model.enums.Rank;
 import com.example.karatestudents.service.StudentService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -156,6 +158,36 @@ class StudentControllerIT {
 
     @Test
     void updateStudent() {
+        StudentDto oldStudent = StudentDto.builder()
+                .name("John Doe")
+                .dateOfBirth(LocalDate.of(1998,7,5))
+                .startedKarate(LocalDate.of(2006,11,1))
+                .rank("BROWN_BELT")
+                .isStudent(true)
+                .build();
+
+        postStudentDto(studentUrl, oldStudent);
+
+        StudentDto updatedStudent = StudentDto.builder()
+                .name("John Doe")
+                .dateOfBirth(LocalDate.of(1998,7,5))
+                .startedKarate(LocalDate.of(2006,11,1))
+                .rank("FIRST_DAN")
+                .isStudent(false)
+                .build();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<StudentDto> requestEntity = new HttpEntity<>(updatedStudent, headers);
+
+        ResponseEntity<StudentDto> response = restTemplate.exchange(studentUrl + "/" + 1, HttpMethod.PUT, requestEntity, StudentDto.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        Student updatedStudentInDb = studentService.getStudentById(1L);
+
+        assertEquals(Rank.valueOf("FIRST_DAN"), updatedStudentInDb.getRank());
+        assertFalse(updatedStudentInDb.isStudent());
     }
 
     @Test
