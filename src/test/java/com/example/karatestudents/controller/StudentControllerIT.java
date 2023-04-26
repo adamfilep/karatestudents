@@ -192,6 +192,23 @@ class StudentControllerIT {
 
     @Test
     void deleteStudent() {
+        StudentDto studentDto = StudentDto.builder()
+                .name("John Doe")
+                .dateOfBirth(LocalDate.of(1998,7,5))
+                .startedKarate(LocalDate.of(2006,11,1))
+                .rank("BROWN_BELT")
+                .isStudent(true)
+                .build();
+
+        studentService.saveStudent(studentDto);
+
+        assertEquals(1, studentService.getAllStudents().size());
+
+        ResponseEntity<Void> response = restTemplate.exchange(studentUrl + "/" + 1, HttpMethod.DELETE, null, Void.class);
+
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
+
+        assertEquals(0, studentService.getAllStudents().size());
     }
 
     private void assertSameStudent(StudentDto expected, StudentDto actual) {
