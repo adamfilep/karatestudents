@@ -130,6 +130,28 @@ class StudentControllerIT {
 
     @Test
     void getStudentById() {
+
+        StudentDto student = StudentDto.builder()
+                .name("Jane Hunter")
+                .dateOfBirth(LocalDate.of(2000,3,2))
+                .startedKarate(LocalDate.of(2020,11,1))
+                .rank("YELLOW_BELT")
+                .isStudent(true)
+                .build();
+
+        postStudentDto(studentUrl, student);
+
+        studentUrl += "/1";
+
+        final ResponseEntity<StudentDto> response = restTemplate.getForEntity(studentUrl, StudentDto.class);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+
+        StudentDto actualStudent = response.getBody();
+        assert actualStudent != null;
+
+        assertEquals("Jane Hunter", actualStudent.getName());
+        assertEquals("YELLOW_BELT", actualStudent.getRank());
     }
 
     @Test
