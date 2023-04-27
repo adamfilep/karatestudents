@@ -45,7 +45,6 @@ class StudentIT {
     @Test
     void saveStudentTest() {
 
-        // create a new studentDto
         StudentDto studentDto = StudentDto.builder()
                 .name("John Doe")
                 .dateOfBirth(LocalDate.of(1980, 1,1))
@@ -54,18 +53,14 @@ class StudentIT {
                 .isStudent(true)
                 .build();
 
-        // HTTP post request
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<StudentDto> entity = new HttpEntity<>(studentDto, headers);
 
-        // get a response
         ResponseEntity<Student> postResponse = restTemplate.postForEntity(studentUrl, entity, Student.class);
 
-        // assert that the response status is CREATED
         assertEquals(HttpStatus.CREATED, postResponse.getStatusCode());
 
-        // verify that the saveStudent method of the StudentService was called with the correct arguments
         ArgumentCaptor<StudentDto> argumentCaptor = ArgumentCaptor.forClass(StudentDto.class);
         verify(studentService, times(1)).saveStudent(argumentCaptor.capture());
 
@@ -74,9 +69,8 @@ class StudentIT {
     }
 
     @Test
-    public void testSaveStudentWithFaultyJson() {
+    public void testSaveStudentWithFaultyJsonTest() {
 
-        // create a new studentDto
         StudentDto studentDto = StudentDto.builder()
                 .name("")
                 .dateOfBirth(LocalDate.of(1980, 1,1))
@@ -85,20 +79,17 @@ class StudentIT {
                 .isStudent(true)
                 .build();
 
-        // HTTP post request
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<StudentDto> entity = new HttpEntity<>(studentDto, headers);
 
-        // get a response
         ResponseEntity<Error> response = restTemplate.postForEntity(studentUrl, entity, Error.class);
 
-        // assert that the response status is BAD REQUEST
         assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
     }
 
     @Test
-    void getAllStudents() {
+    void getAllStudentsTest() {
         StudentDto student1 = StudentDto.builder()
                 .name("John Doe")
                 .dateOfBirth(LocalDate.of(1998,7,5))
@@ -131,7 +122,7 @@ class StudentIT {
     }
 
     @Test
-    void getStudentById() {
+    void getStudentByIdTest() {
 
         StudentDto student = StudentDto.builder()
                 .name("Jane Hunter")
@@ -157,7 +148,7 @@ class StudentIT {
     }
 
     @Test
-    void updateStudent() {
+    void updateStudentTest() {
         StudentDto oldStudent = StudentDto.builder()
                 .name("John Doe")
                 .dateOfBirth(LocalDate.of(1998,7,5))
@@ -191,7 +182,7 @@ class StudentIT {
     }
 
     @Test
-    void deleteStudent() {
+    void deleteStudentTest() {
         StudentDto studentDto = StudentDto.builder()
                 .name("John Doe")
                 .dateOfBirth(LocalDate.of(1998,7,5))

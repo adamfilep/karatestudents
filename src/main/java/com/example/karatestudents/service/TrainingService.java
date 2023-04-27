@@ -63,7 +63,9 @@ public class TrainingService {
                 student.getTrainingList().remove(training);
             }
         }
-        trainer.getTrainingList().remove(training);
+        if (trainer != null) {
+            trainer.getTrainingList().remove(training);
+        }
         trainingRepository.deleteById(id);
     }
 
