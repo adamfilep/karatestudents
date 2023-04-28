@@ -1,0 +1,20 @@
+services:
+  karatestudentspsql:
+    image: postgres:alpine
+    environment:
+      - POSTGRES_DB=karatedb
+      - POSTGRES_USER=karateuser
+      - POSTGRES_PASSWORD=karateuser
+    ports:
+      - "5442:5432"
+    restart: on-failure
+  karatestudentsapp:
+    build:
+      context: .
+    depends_on:
+      - karatestudentspsql
+    environment:
+      - DB_URL=karatestudents
+      - DB_PORT=5432
+    ports:
+      - "80:8080"
