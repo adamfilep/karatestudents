@@ -1,17 +1,14 @@
-alter table if exists training
-    add constraint FK7r3b25ygw5bdjamojskmpk0b9
-        foreign key (trainer_id)
-            references trainer
-;
+ALTER TABLE IF EXISTS training
+    ADD CONSTRAINT fk_training_trainerId
+        FOREIGN KEY (trainer_id)
+            REFERENCES trainer;
 
-alter table if exists training_student
-    add constraint FKg30d1hddnmwj7qbu7iubguwlg
-        foreign key (student_id)
-            references student
-;
+ALTER TABLE IF EXISTS training_student
+    ADD CONSTRAINT fk_training_student_studentId
+        FOREIGN KEY (student_id)
+            REFERENCES student;
 
-alter table if exists training_student
-    add constraint FKo8um3a5gjdhvsnlg3ymrchpwe
-        foreign key (training_id)
-            references training
-;
+ALTER TABLE IF EXISTS training_student
+    ADD CONSTRAINT fk_training_student_trainerId
+        FOREIGN KEY (training_id)
+            REFERENCES training;
