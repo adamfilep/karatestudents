@@ -14,7 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 				description = "Documentation for exam project: Karate students manager"
 		),
 		servers = {
-				@Server(url = "http://localhost:8080", description = "Local server")
+				@Server(url = "http://localhost:8080", description = "Local server"),
+				@Server(url = "http://localhost:80", description = "Docker")
 		}
 )
 @SpringBootApplication
