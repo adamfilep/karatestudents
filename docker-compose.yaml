@@ -1,5 +1,5 @@
 services:
-  karatestudentspsql:
+  dockerdbpsql:
     image: postgres:alpine
     environment:
       - POSTGRES_DB=karatedb
@@ -8,13 +8,13 @@ services:
     ports:
       - "5442:5432"
     restart: on-failure
-  karatestudentsapp:
+  karateapp:
     build:
-      context: .
+      context: . #Build image according to Dockerfile in this directory
     depends_on:
-      - karatestudentspsql
+      - dockerdbpsql
     environment:
-      - DB_URL=karatestudents
+      - DB_URL=dockerdbpsql
       - DB_PORT=5432
     ports:
       - "80:8080"
