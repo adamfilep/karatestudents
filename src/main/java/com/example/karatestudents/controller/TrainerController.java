@@ -83,7 +83,7 @@ public class TrainerController {
 
     @Operation(summary = "Delete trainer with a specific id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Trainer deleted successfully"),
+            @ApiResponse(responseCode = "204", description = "Trainer deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Trainer to be deleted not found")
     })
     @DeleteMapping("/{id}")

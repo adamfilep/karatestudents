@@ -84,7 +84,7 @@ public class TrainingController {
 
     @Operation(summary = "Delete training with a specific id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Training deleted successfully"),
+            @ApiResponse(responseCode = "204", description = "Training deleted successfully"),
             @ApiResponse(responseCode = "404", description = "Training to be deleted not found")
 
     })
