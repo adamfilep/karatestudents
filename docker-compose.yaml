@@ -10,7 +10,7 @@ services:
     restart: on-failure
   karateapp:
     build:
-      context: . #Build image according to Dockerfile in this directory
+      context: .
     depends_on:
       - dockerdbpsql
     environment:
