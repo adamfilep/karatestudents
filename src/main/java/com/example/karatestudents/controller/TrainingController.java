@@ -113,7 +113,7 @@ public class TrainingController {
         return ResponseEntity.ok().build();
     }
 
-    @Operation(summary = "DAdd student to training by id")
+    @Operation(summary = "Add student to training by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Student added to training"),
             @ApiResponse(responseCode = "404", description = "trainingId or studentId not found")
