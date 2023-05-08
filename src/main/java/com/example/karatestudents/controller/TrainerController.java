@@ -30,7 +30,7 @@ public class TrainerController {
 
     @Operation(summary = "Save new trainer")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "New trainer saved"),
+            @ApiResponse(responseCode = "201", description = "New trainer saved"),
             @ApiResponse(responseCode = "400", description = "Request JSON was not correct")
     })
     @PostMapping
